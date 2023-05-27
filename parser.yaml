@@ -1,0 +1,31 @@
+prepend-proxy-groups:
+  - name: 🚀 LB
+    type: select
+append-proxy-groups:
+  - name: ⚖️ HK
+    type: load-balance
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    strategy: round-robin
+  - name: ⚖️ TW
+    type: load-balance
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    strategy: consistent-hashing
+  - name: ⚖️ US
+    type: load-balance
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    strategy: consistent-hashing
+
+commands:
+  - proxy-groups.1.proxies.0+🚀 LB
+  - proxy-groups.🚀 LB.proxies=[]groupNames|⚖️
+  - proxy-groups.⚖️ HK.proxies=[]proxyNames|香港
+  - proxy-groups.⚖️ TW.proxies=[]proxyNames|台湾
+  - proxy-groups.⚖️ US.proxies=[]proxyNames|美国
+
+prepend-rules:
+  - DOMAIN,translate.googleapis.com,🚀 LB
+  - DOMAIN-SUFFIX,openai.com,⚖️ US
+  - DOMAIN,yacd.haishan.me,DIRECT
