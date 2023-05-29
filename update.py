@@ -5,13 +5,14 @@ url = ""
 if not url:
     print("URL不能为空")
     raise SystemExit
-subprocess.Popen(["curl", "-o", "config.yaml", url]).wait()
+subprocess.run(["curl", "-o", "config.yaml", url])
 
 with open('parser.yaml', 'r', encoding='utf-8') as f:
     parser = yaml.safe_load(f)
 with open('config.yaml', 'r', encoding='utf-8') as f:
     config = yaml.safe_load(f)
 
+config['secret'] = 'abc'
 # prepend-proxy-groups:
 config['proxy-groups']=parser['prepend-proxy-groups']+config['proxy-groups']
 
@@ -53,4 +54,4 @@ class IndentDumper(yaml.Dumper):
 with open('config.yaml', 'w', encoding='utf-8') as f:
     yaml.dump(config, f, Dumper=IndentDumper,allow_unicode=True,default_flow_style=False,sort_keys=False)
 
-subprocess.call(['reboot.bat'])
+subprocess.run('curl -X PUT -H "Authorization: Bearer abc" 127.0.0.1:9090/configs --json "{}"')
