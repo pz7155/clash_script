@@ -1,11 +1,12 @@
-import subprocess,yaml
+from subprocess import run
+import yaml
 
 # 下载订阅文件
 url = ""
 if not url:
     print("URL不能为空")
     raise SystemExit
-subprocess.run(["curl", "-o", "config.yaml", url])
+run(["curl", "-o", "config.yaml", url])
 
 with open('parser.yaml', 'r', encoding='utf-8') as f:
     parser = yaml.safe_load(f)
@@ -54,4 +55,4 @@ class IndentDumper(yaml.Dumper):
 with open('config.yaml', 'w', encoding='utf-8') as f:
     yaml.dump(config, f, Dumper=IndentDumper,allow_unicode=True,default_flow_style=False,sort_keys=False)
 
-subprocess.run('curl -X PUT -H "Authorization: Bearer abc" 127.0.0.1:9090/configs --json "{}"')
+run('curl -X PUT -H "Authorization: Bearer abc" 127.0.0.1:9090/configs --json "{}"')
