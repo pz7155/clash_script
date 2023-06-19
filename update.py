@@ -24,11 +24,10 @@ config['proxy-groups'].extend(parser['append-proxy-groups'])
 config['rules']=parser['prepend-rules']+config['rules']
 
 #commands:
-#- proxy-groups.1.proxies.0+🚀 LB
-config['proxy-groups'][1]['proxies'].insert(0, '🚀 LB')
+config['proxy-groups'][1]['proxies'].insert(0, '🚀 LB') #- proxy-groups.1.proxies.0+🚀 LB
 
 proxyNames = []
-groupNames = []
+groupNames = ['DIRECT']
 for proxy in config['proxies']:
     proxyNames.append(proxy['name'])
 for group in parser['append-proxy-groups']:
